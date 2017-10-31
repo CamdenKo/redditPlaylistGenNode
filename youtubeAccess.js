@@ -44,8 +44,9 @@ function storeToken(token) {
  * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
  * @param {getEventsCallback} callback The callback to call with the authorized
  *     client.
+ * @returns {google.auth.OAuth2} new Auth Object
  */
-const getNewToken = (oauth2Client, callback) => {
+const getNewToken = (oauth2Client) => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
@@ -64,7 +65,7 @@ const getNewToken = (oauth2Client, callback) => {
       }
       const credentialOauth = { ...oauth2Client, credentials: token }
       storeToken(token)
-      callback(credentialOauth)
+      return credentialOauth
     })
   })
 }
@@ -103,9 +104,9 @@ function getChannel(auth) {
  * given callback function.
  *
  * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
+ * @returns {google.auth.OAuth2} Authorization object
  */
-const authorize = async (credentials, callback) => {
+const authorize = async (credentials) => {
   const clientSecret = credentials.installed.client_secret
   const clientId = credentials.installed.client_id
   const redirectUrl = credentials.installed.redirect_uris[0]
@@ -116,21 +117,24 @@ const authorize = async (credentials, callback) => {
   try {
     const token = await promisifedRF(TOKEN_PATH)
     oauth2Client.credentials = JSON.parse(token)
-    callback(oauth2Client)
+    return oauth2Client
   } catch (error) {
-    getNewToken(oauth2Client, callback)
+    return getNewToken(oauth2Client, callback)
   }
 }
 
 // Load client secrets from a local file.
-const accessYoutube = () => {
+/**
+ * @returns {google.auth.OAuth2} Authorization Object
+ */
+const accessYoutube = async () => {
   fs.readFile('client_id.json', (err, content) => {
     if (err) {
       console.error(`Error loading client secret file:  ${err}`)
       return
     }
     // Authorize a client with the loaded credentials, then call the YouTube API.
-    authorize(JSON.parse(content), getChannel)
+    return await authorize(JSON.parse(content))
   })
 }
 

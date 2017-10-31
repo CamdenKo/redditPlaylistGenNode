@@ -10,3 +10,8 @@ const {
 } = require('./util')
 
 const refreshRate = minToMs(15)
+
+const startUp = () =>
+  setInterval(async () => {
+    const auth = await accessYoutube()
+  } ,refreshRate)
