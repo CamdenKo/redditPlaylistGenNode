@@ -4,7 +4,7 @@ const {
 } = require('./redditBot')
 const {
   accessYoutube,
-} = require('./youtubeAccess')
+} = require('./youtubeAuth')
 const {
   minToMs,
 } = require('./util')
