@@ -3,7 +3,7 @@ const andFunc = (...funcs) =>
     funcs.some(func => func(val))
 
 const isYoutube = str =>
-  str.contains('.youtube.') || str.contains('.youtu.be.')
+  str.includes('.youtube.') || str.includes('youtu.be')
 
 module.exports = {
   andFunc,
