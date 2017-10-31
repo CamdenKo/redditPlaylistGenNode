@@ -13,10 +13,11 @@ const goodSubmission = submission =>
 
 const getData = async (request) => {
   const hot = await request.getSubreddit('listentothis').getHot()
-  const urlArr = hot
+  return hot
     .filter(goodSubmission)
     .map(submission => submission.url)
-  console.log(urlArr)
 }
 
-getData(requester)
+module.exports = {
+  getData,
+}
