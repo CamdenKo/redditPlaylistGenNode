@@ -3,6 +3,16 @@ const readline = require('readline')
 const google = require('googleapis')
 const GoogleAuth = require('google-auth-library')
 
+const promisifedRF = path => new Promise((resolve, reject) => {
+  fs.readFile(path, (err, value) => {
+    if (err) {
+      reject(err)
+    } else {
+      resolve(value)
+    }
+  })
+})
+
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/youtube-nodejs-quickstart.json
 const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
@@ -17,7 +27,7 @@ const TOKEN_PATH = `${TOKEN_DIR}youtube-nodejs-quickstart.json`
  * @param {Object} credentials The authorization client credentials.
  * @param {function} callback The callback to call with the authorized client.
  */
-function authorize(credentials, callback) {
+const authorize = async (credentials, callback) => {
   const clientSecret = credentials.installed.client_secret
   const clientId = credentials.installed.client_id
   const redirectUrl = credentials.installed.redirect_uris[0]
@@ -25,18 +35,17 @@ function authorize(credentials, callback) {
   const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl)
 
   // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) {
-      getNewToken(oauth2Client, callback)
-    } else {
-      oauth2Client.credentials = JSON.parse(token)
-      callback(oauth2Client)
-    }
-  })
+  try {
+    const token = await promisifedRF(TOKEN_PATH)
+    oauth2Client.credentials = JSON.parse(token)
+    callback(oauth2Client)
+  } catch (error) {
+    getNewToken(oauth2Client, callback)
+  }
 }
 
 // Load client secrets from a local file.
-fs.readFile('client_secret.json', (err, content) => {
+fs.readFile('client_id.json', (err, content) => {
   if (err) {
     console.error(`Error loading client secret file:  ${err}`)
     return
