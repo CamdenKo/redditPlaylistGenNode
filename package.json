@@ -4,7 +4,8 @@
   "description": "",
   "main": "playlistGen.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test-w": "jest --watch"
   },
   "keywords": [],
   "author": "Camden <camdenko@gmail.com> (camdenko.github.io)",
