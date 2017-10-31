@@ -19,5 +19,6 @@ const getData = async (request) => {
 }
 
 module.exports = {
+  requester,
   getData,
 }

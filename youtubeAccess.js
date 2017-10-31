@@ -123,11 +123,17 @@ const authorize = async (credentials, callback) => {
 }
 
 // Load client secrets from a local file.
-fs.readFile('client_id.json', (err, content) => {
-  if (err) {
-    console.error(`Error loading client secret file:  ${err}`)
-    return
-  }
-  // Authorize a client with the loaded credentials, then call the YouTube API.
-  authorize(JSON.parse(content), getChannel)
-})
+const accessYoutube = () => {
+  fs.readFile('client_id.json', (err, content) => {
+    if (err) {
+      console.error(`Error loading client secret file:  ${err}`)
+      return
+    }
+    // Authorize a client with the loaded credentials, then call the YouTube API.
+    authorize(JSON.parse(content), getChannel)
+  })
+}
+
+module.exports = {
+  accessYoutube,
+}
