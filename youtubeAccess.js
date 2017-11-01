@@ -62,7 +62,7 @@ const getNewToken = (oauth2Client, callback) => {
         console.error('Error while trying to retrieve access token', err)
         return
       }
-      const credentialOauth = { ...oauth2Client, credentials: token }
+      const credentialOauth = Object.assign(oauth2Client, { credentials: token })
       storeToken(token)
       callback(credentialOauth)
     })
@@ -134,6 +134,7 @@ const accessYoutube = () => {
   })
 }
 
+accessYoutube()
 module.exports = {
   accessYoutube,
 }
