@@ -4,5 +4,8 @@
     "test": true,
     "expect": true,
     "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6
   }
 }

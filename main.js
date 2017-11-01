@@ -11,7 +11,16 @@ const {
 
 const refreshRate = minToMs(15)
 
-const startUp = () =>
-  setInterval(async () => {
-    const auth = await accessYoutube()
-  } ,refreshRate)
+const startUp = () => {
+  let auth = await accessYoutube()
+  return setInterval(async () => {
+    try {
+      auth = auth ? auth : await accessYoutube()
+
+    } catch (error) {
+      console.error(error)
+      auth = await accessYoutube()
+    }
+  }, refreshRate)
+
+}

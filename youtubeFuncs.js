@@ -3,7 +3,8 @@
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-function getChannel(auth) {
+
+const getChannel = (auth) => {
   const service = google.youtube('v3')
   service.channels.list({
     auth,
@@ -25,4 +26,8 @@ function getChannel(auth) {
                   channels[0].statistics.viewCount)
     }
   })
+}
+
+module.exports = {
+  getChannel,
 }
