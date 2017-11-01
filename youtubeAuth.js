@@ -1,6 +1,6 @@
 const fs = require('fs')
 const readline = require('readline')
-const google = require('googleapis')
+
 const GoogleAuth = require('google-auth-library')
 
 const promisifedRF = path => new Promise((resolve, reject) => {
@@ -63,7 +63,7 @@ const getNewToken = (oauth2Client) => {
         console.error('Error while trying to retrieve access token', err)
         return
       }
-      const credentialOauth = { ...oauth2Client, credentials: token }
+      const credentialOauth = Object.assign(oauth2Client, {credentials: token })
       storeToken(token)
       return credentialOauth
     })
@@ -99,7 +99,7 @@ const authorize = async (credentials) => {
  * @returns {google.auth.OAuth2} Authorization Object
  */
 const accessYoutube = async () => {
-  fs.readFile('client_id.json', (err, content) => {
+  fs.readFile('client_id.json', async (err, content) => {
     if (err) {
       console.error(`Error loading client secret file:  ${err}`)
       return

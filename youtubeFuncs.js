@@ -1,3 +1,5 @@
+const google = require('googleapis')
+
 /**
  * Lists the names and IDs of up to 10 files.
  *
