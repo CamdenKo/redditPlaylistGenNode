@@ -7,6 +7,7 @@ const google = require('googleapis')
  */
 
 const getChannel = (auth) => {
+  console.log(auth, '------------auth----------')
   const service = google.youtube('v3')
   service.channels.list({
     auth,

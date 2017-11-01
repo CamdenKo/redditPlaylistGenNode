@@ -99,14 +99,12 @@ const authorize = async (credentials) => {
  * @returns {google.auth.OAuth2} Authorization Object
  */
 const accessYoutube = async () => {
-  fs.readFile('client_id.json', async (err, content) => {
-    if (err) {
-      console.error(`Error loading client secret file:  ${err}`)
-      return
-    }
-    // Authorize a client with the loaded credentials, then call the YouTube API.
-    return await authorize(JSON.parse(content))
-  })
+  try {
+    const content = await promisifedRF('client_id.json')
+    return JSON.parse(content)
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 module.exports = {
