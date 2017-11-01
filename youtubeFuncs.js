@@ -8,11 +8,13 @@ const google = require('googleapis')
 
 const getChannel = (auth) => {
   const service = google.youtube('v3')
+  // console.log(service.channels)
   service.channels.list({
     auth,
     part: 'snippet,contentDetails,statistics',
-    forUsername: 'redditBot',
+    forUsername: 'GoogleDevelopers',
   }, (err, response) => {
+    console.log('cb')
     if (err) {
       console.error(`The API returned an error: ${err}`)
       return
