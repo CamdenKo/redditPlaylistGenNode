@@ -16,7 +16,7 @@ const refreshRate = 100//minToMs(.15)
 
 const startUp = async () => {
   let auth = await accessYoutube()
-  return setInterval(async () => {
+  // return setInterval(async () => {
     try {
       auth = auth ? auth : await accessYoutube()
       getChannel(auth)
@@ -24,7 +24,7 @@ const startUp = async () => {
       console.error(error)
       auth = await accessYoutube()
     }
-  }, refreshRate)
+  // }, refreshRate)
 }
 
 startUp()

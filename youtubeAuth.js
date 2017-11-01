@@ -15,7 +15,7 @@ const promisifedRF = path => new Promise((resolve, reject) => {
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/youtube-nodejs-quickstart.json
-const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
+const SCOPES = ['https://www.googleapis.com/auth/youtube']
 const TOKEN_DIR = `${process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE}/.credentials/`
 const TOKEN_PATH = `${TOKEN_DIR}youtube-nodejs-quickstart.json`
@@ -42,8 +42,6 @@ function storeToken(token) {
  * execute the given callback with the authorized OAuth2 client.
  *
  * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback to call with the authorized
- *     client.
  * @returns {google.auth.OAuth2} new Auth Object
  */
 const getNewToken = (oauth2Client) => {
@@ -63,9 +61,9 @@ const getNewToken = (oauth2Client) => {
         console.error('Error while trying to retrieve access token', err)
         return
       }
-      const credentialOauth = Object.assign(oauth2Client, {credentials: token })
+      oauth2Client.credentials = token
       storeToken(token)
-      return credentialOauth
+      return oauth2Client
     })
   })
 }
@@ -90,7 +88,7 @@ const authorize = async (credentials) => {
     oauth2Client.credentials = JSON.parse(token)
     return oauth2Client
   } catch (error) {
-    return getNewToken(oauth2Client, callback)
+    return getNewToken(oauth2Client)
   }
 }
 
@@ -101,7 +99,7 @@ const authorize = async (credentials) => {
 const accessYoutube = async () => {
   try {
     const content = await promisifedRF('client_id.json')
-    return JSON.parse(content)
+    return await authorize(JSON.parse(content))
   } catch (error) {
     console.error(error)
   }
