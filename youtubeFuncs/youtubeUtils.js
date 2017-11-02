@@ -3,6 +3,12 @@ const playlistsToMake = (playlists, subreddits) => {
   return subreddits.filter((subreddit) => !alreadyCreatedPlaylists.has(subreddit))
 }
 
+const filterPlaylists = (playlists, subreddits) =>
+  Object.keys(playlists)
+    .filter((playlistName) => subreddits.includes(playlistName))
+    .reduce((accum, playlistName, index) => Object.assign(accum, { [playlistName]: playlists[playlistName] }))
+
 module.exports = {
   playlistsToMake,
+  filterPlaylists,
 }
