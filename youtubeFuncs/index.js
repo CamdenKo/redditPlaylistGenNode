@@ -1,6 +1,6 @@
 const google = require('googleapis')
 
-const playlistsPromise = (auth) =>
+const getPlaylistsPromise = auth =>
   new Promise((resolve, reject) => {
     const service = google.youtube('v3')
     service.playlists.list({
@@ -17,16 +17,42 @@ const playlistsPromise = (auth) =>
     })
   })
 
+const createPlaylistPromise = (auth, title) =>
+  new Promise((resolve, reject) => {
+    const service = google.youtube('v3')
+    service.playlists.insert({
+      auth,
+      resource: {
+        snippet: {
+          title,
+          description: `Automatically created playlist for /r/${title} created by CamdenK`,
+        },
+        status: {
+          privacyStatus: 'public',
+        },
+      },
+    }, (err, response) => {
+      if (err) reject(err)
+      else resolve(response.items)
+    })
+  })
+
 const getPlaylists = async (auth) => {
   try {
-    const playlists = await playlistsPromise(auth)
+    const playlists = await getPlaylistsPromise(auth)
     return playlists.reduce((accum, playlist) => Object.assign(accum, { [playlist.snippet.title]: playlist.id }), {})
   } catch (error) {
     console.error(`Trouble getting playlists -- ${error}`)
   }
 }
 
+const createPlaylist = async(auth, name) => {
+  try {
 
+  } catch (error) {
+
+  }
+}
 /**
  * Lists the names and IDs of up to 10 files.
  *
