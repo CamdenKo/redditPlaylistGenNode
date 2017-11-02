@@ -9,33 +9,23 @@ const {
   minToMs,
 } = require('./util')
 const {
-  getChannel,
   getPlaylists,
-  createPlaylist,
   createPlaylists,
   addAllToPlaylists,
-  playistItemsPromise
+  clearPlaylists,
 } = require('./youtubeFuncs')
 const {
   playlistsToMake,
   filterPlaylists,
 } = require('./youtubeFuncs/youtubeUtils')
 
-const refreshRate = minToMs(.15)
-
-const subreddits = [
-  'listentothis',
-  // 'trailers',
-  // 'videos',
-]
-
-const testFunc = toPrint => console.log(toPrint)
 /**
  * @returns {Object} { subreddit: ['links'] }
  */
 const setupPlaylists = async (auth, subreddits) => {
   const existingPlaylists = await getPlaylists(auth)
   const filteredPlaylists = filterPlaylists(existingPlaylists, subreddits)
+  await clearPlaylists(auth, Object.values(filteredPlaylists))
   const toCreate = playlistsToMake(filteredPlaylists, subreddits)
   if (toCreate.length) {
     await createPlaylists(auth, toCreate)
@@ -46,6 +36,13 @@ const setupPlaylists = async (auth, subreddits) => {
 }
 
 const startUp = async () => {
+  const subreddits = [
+    'listentothis',
+    // 'trailers',
+    // 'videos',
+  ]
+  const refreshRate = minToMs(60)
+
   let auth = await accessYoutube()
   const reddit = accessReddit()
   // return setInterval(async () => {
@@ -54,7 +51,6 @@ const startUp = async () => {
     auth = auth || await accessYoutube()
     const hotContent = await getHotFromSubs(reddit, subreddits)
     const playlists = await setupPlaylists(auth, subreddits)
-    console.log(await playistItemsPromise(auth, playlists.listentothis))
     // const combinedData = Object.keys(playlists)
     //   .reduce((accum, playlistName) =>
     //     Object.assign(

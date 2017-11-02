@@ -57,12 +57,13 @@ const addToPlaylistPromise = (auth, playlistId, videoId) =>
     })
   })
 
-const playistItemsPromise = (auth, playlistId) =>
+const playlistItemsPromise = (auth, playlistId) =>
   new Promise((resolve, reject) => {
     service.playlistItems.list({
       auth,
       part: 'contentDetails',
       playlistId,
+      maxResults: '50',
     }, (err, response) => {
       if (err) reject(err)
       else resolve(response.items)
@@ -100,7 +101,7 @@ const getPlaylists = async (auth) => {
 
 const createPlaylist = async (auth, title) => {
   try {
-    const createdPlaylist = await createPlaylistPromise(auth, title)
+    await createPlaylistPromise(auth, title)
   } catch (error) {
     console.error(`Trouble creating playlist -- ${error}`)
   }
@@ -127,41 +128,24 @@ const addAllToPlaylists = async (auth, combinedData) =>
       ),
   )
 
-/**
- * Lists the names and IDs of up to 10 files.
- *
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-
-const getChannel = (auth) => {
-  const service = google.youtube('v3')
-  service.channels.list({
-    auth,
-    part: 'snippet,contentDetails,statistics',
-    forUsername: 'GoogleDevelopers',
-  }, (err, response) => {
-    if (err) {
-      console.error(`The API returned an error: ${err}`)
-      return
-    }
-    const channels = response.items
-    if (!channels.length) {
-      console.log('No channel found.')
-    } else {
-      console.log('This channel\'s ID is %s. Its title is \'%s\', and ' +
-                  'it has %s views.',
-                  channels[0].id,
-                  channels[0].snippet.title,
-                  channels[0].statistics.viewCount)
-    }
-  })
+const clearPlaylist = async (auth, playlistId) => {
+  const playlist = await playlistItemsPromise(auth, playlistId)
+  console.log('playlist l', playlist.length)
+  const playlistItemsIds = playlist
+    .reduce((accum, item) => [...accum, item.id], [])
+  console.log('ids', playlistItemsIds)
+  for (let playlistItemId of playlistItemsIds) {
+    await deletePlaylistItemPromise(auth, playlistItemId)
+  }
 }
 
+const clearPlaylists = (auth, playlistIds) =>
+  Promise.all(playlistIds.map(playlistId => clearPlaylist(auth, playlistId)))
+
+
 module.exports = {
-  getChannel,
   getPlaylists,
-  createPlaylist,
   createPlaylists,
   addAllToPlaylists,
-  playistItemsPromise,
+  clearPlaylists,
 }
