@@ -26,17 +26,26 @@ const subreddits = [
   'videos',
 ]
 
+const setupPlaylists = async (auth, subreddits) => {
+  const existingPlaylists = await getPlaylists(auth)
+  const filteredPlaylists = filterPlaylists(existingPlaylists, subreddits)
+  const toCreate = playlistsToMake(filteredPlaylists, subreddits)
+  if (toCreate.length) {
+    await createPlaylists(auth, toCreate)
+    const allPlaylists = await getPlaylists(auth)
+    return filterPlaylists(allPlaylists, subreddits)
+  }
+  return filteredPlaylists
+}
+
 const startUp = async () => {
   let auth = await accessYoutube()
-  // const reddit = accessReddit()
+  const reddit = accessReddit()
   // return setInterval(async () => {
     try {
       auth = auth ? auth : await accessYoutube()
       const hotContent = await getHotFromSubs(reddit,subreddits)
-      const existingPlaylists = await getPlaylists(auth)
-      const filteredPlaylists = filterPlaylists(existingPlaylists, subreddits)
-      const toCreate = playlistsToMake(filteredPlaylists, subreddits)
-      await createPlaylists(auth, toCreate)
+      const playlists = await setupPlaylists(auth, subreddits)
     } catch (error) {
       console.error(error)
       auth = await accessYoutube()
