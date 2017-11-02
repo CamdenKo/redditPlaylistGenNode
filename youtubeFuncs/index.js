@@ -38,6 +38,29 @@ const createPlaylistPromise = (auth, title) =>
     })
   })
 
+const addToPlaylistPromise = (auth, playlistId, videoId) =>
+  new Promise((resolve, reject) => {
+    const service = google.youtube('v3')
+    service.playlistItems.insert({
+      auth,
+      part: 'snippet',
+      resource: {
+        snippet: {
+          playlistId,
+          resourceId: {
+            videoId,
+            kind: 'youtube#video',
+          },
+        },
+      },
+    })
+  })
+
+/**
+ *
+ * @param {google.auth.OAuth2} auth
+ * @returns {Object} title: id
+ */
 const getPlaylists = async (auth) => {
   try {
     const playlists = await getPlaylistsPromise(auth)
@@ -50,7 +73,6 @@ const getPlaylists = async (auth) => {
 const createPlaylist = async (auth, title) => {
   try {
     const createdPlaylist = await createPlaylistPromise(auth, title)
-    console.log(createdPlaylist)
   } catch (error) {
     console.error(`Trouble creating playlist -- ${error}`)
   }
