@@ -6,9 +6,6 @@ const {
   accessYoutube,
 } = require('./youtubeAuth')
 const {
-  minToMs,
-} = require('./util')
-const {
   getPlaylists,
   createPlaylists,
   addAllToPlaylists,
@@ -41,14 +38,11 @@ const startUp = async () => {
     'trailers',
     'videos',
   ]
-  const refreshRate = minToMs(60)
-
-  let auth = await accessYoutube()
+  const startTime = Date.now()
+  console.log('starting...')
   const reddit = accessReddit()
-  // return setInterval(async () => {
   try {
-    const startTime = Date.now()
-    auth = auth || await accessYoutube()
+    const auth = await accessYoutube()
     const hotContent = await getHotFromSubs(reddit, subreddits)
     const playlists = await setupPlaylists(auth, subreddits)
     const combinedData = Object.keys(playlists)
@@ -65,9 +59,7 @@ const startUp = async () => {
     console.log(`Loop finished in ${Date.now() - startTime}ms.`)
   } catch (error) {
     console.error(error)
-    auth = await accessYoutube()
   }
-  // }, refreshRate)
 }
 
 startUp()
