@@ -19,6 +19,12 @@ const getHotFromSub = async (request, subreddit) => {
     .map(submission => submission.url)
 }
 
+/**
+ *
+ * @param {Snoowrap} request created Snoowrap request object
+ * @param {Array(strings)} subreddits strings of which subreddits to check (omit /r/)
+ * @returns {Object} An Object with keys being subreddit and value being array of strings of the links from hot
+ */
 const getHotFromSubs = async (request, subreddits) => {
   try {
     const allLinks = await Promise.all(subreddits.map(subName => getHotFromSub(request, subName)))
