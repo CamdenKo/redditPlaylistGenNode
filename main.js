@@ -1,6 +1,6 @@
 const {
-  requester,
-  getData,
+  getHotFromSubs,
+  accessReddit,
 } = require('./redditBot')
 const {
   accessYoutube,
@@ -14,11 +14,19 @@ const {
 
 const refreshRate = 100//minToMs(.15)
 
+const subreddits = [
+  'listentothis',
+  'trailers',
+  'videos',
+]
+
 const startUp = async () => {
   let auth = await accessYoutube()
+  const reddit = accessReddit()
   // return setInterval(async () => {
     try {
       auth = auth ? auth : await accessYoutube()
+      console.log(await getHotFromSubs(reddit,subreddits))
       getChannel(auth)
     } catch (error) {
       console.error(error)

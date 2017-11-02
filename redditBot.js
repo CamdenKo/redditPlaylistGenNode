@@ -9,17 +9,27 @@ const goodURL = url =>
 const goodSubmission = submission =>
   !submission.stickied && !submission.is_self && goodURL(submission.url)
 
-const getReddit = () =>
+const accessReddit = () =>
   new Snoowrap(reddit)
 
-const getData = async (request) => {
-  const hot = await request.getSubreddit('listentothis').getHot()
+const getHotFromSub = async (request, subreddit) => {
+  const hot = await request.getSubreddit(subreddit || 'listentothis').getHot()
   return hot
     .filter(goodSubmission)
     .map(submission => submission.url)
 }
 
+const getHotFromSubs = async (request, subreddits) => {
+  try {
+    const allLinks = await Promise.all(subreddits.map(subName => getHotFromSub(request, subName)))
+    return allLinks.reduce((accum, links, index) => Object.assign(accum, { [subreddits[index]]: links }), {})
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 module.exports = {
-  requester,
-  getData,
+  accessReddit,
+  getHotFromSub,
+  getHotFromSubs,
 }
