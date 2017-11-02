@@ -3,6 +3,11 @@ const Snoowrap = require('snoowrap')
 const { reddit } = require('./secrets')
 const { andFunc, isYoutube } = require('./urlValidation/urlValidation')
 
+const convertURLToYoutubeId = (url) => {
+  const id = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1].substring(0, 11)
+  return id ? id : url
+}
+
 const goodURL = url =>
   andFunc(isYoutube)(url)
 
@@ -16,7 +21,7 @@ const getHotFromSub = async (request, subreddit) => {
   const hot = await request.getSubreddit(subreddit || 'listentothis').getHot()
   return hot
     .filter(goodSubmission)
-    .map(submission => submission.url)
+    .map(submission => convertURLToYoutubeId(submission.url))
 }
 
 /**

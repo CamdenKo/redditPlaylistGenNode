@@ -49,14 +49,15 @@ const startUp = async () => {
     try {
       auth = auth ? auth : await accessYoutube()
       const hotContent = await getHotFromSubs(reddit, subreddits)
-      const playlists = await setupPlaylists(auth, subreddits)
+      console.log('hot content', hotContent)
+      // const playlists = await setupPlaylists(auth, subreddits)
 
-      const combinedData = Object.keys(playlists)
-        .reduce((accum, playlistName) =>
-          Object.assign(
-            accum,
-            { [playlistName]: { id: playlists[playlistName], links: hotContent[playlistName] } },
-          ), {})
+      // const combinedData = Object.keys(playlists)
+      //   .reduce((accum, playlistName) =>
+      //     Object.assign(
+      //       accum,
+      //       { [playlistName]: { id: playlists[playlistName], links: hotContent[playlistName] } },
+      //     ), {})
 
     } catch (error) {
       console.error(error)

@@ -81,6 +81,20 @@ const createPlaylist = async (auth, title) => {
 const createPlaylists = async (auth, titles) =>
   Promise.all(titles.map(title => createPlaylist(auth, title)))
 
+const addAllToPlaylist = async (auth, playlistId, videoIds) => {
+  try {
+    await Promise.all(videoIds.map(videoId => addToPlaylistPromise(auth, playlistId, videoId)))
+  } catch (error) {
+    console.error(`Trouble adding song to playlist -- ${error}`)
+  }
+}
+
+const addAllToPlaylists = async (auth, combinedData) =>
+  await Promise.all(Object.keys(combinedData)
+    .map((playlistName) => {
+      addAllToPlaylist(auth, combinedData[playlistName].id, combinedData[playlistName].videoId)
+    }))
+
 /**
  * Lists the names and IDs of up to 10 files.
  *
