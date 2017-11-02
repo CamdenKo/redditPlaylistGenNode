@@ -11,6 +11,7 @@ const {
 const {
   getChannel,
   getPlaylists,
+  createPlaylist,
 } = require('./youtubeFuncs')
 const {
   playlistsToMake,
@@ -30,12 +31,12 @@ const startUp = async () => {
   // const reddit = accessReddit()
   // return setInterval(async () => {
     try {
-      // auth = auth ? auth : await accessYoutube()
-      // const hotContent = await getHotFromSubs(reddit,subreddits)
-      // getChannel(auth)
+      auth = auth ? auth : await accessYoutube()
+      const hotContent = await getHotFromSubs(reddit,subreddits)
       const existingPlaylists = await getPlaylists(auth)
       const filteredPlaylists = filterPlaylists(existingPlaylists, subreddits)
       const toCreate = playlistsToMake(filteredPlaylists, subreddits)
+      await createPlaylists(auth, toCreate)
     } catch (error) {
       console.error(error)
       auth = await accessYoutube()

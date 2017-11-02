@@ -22,6 +22,7 @@ const createPlaylistPromise = (auth, title) =>
     const service = google.youtube('v3')
     service.playlists.insert({
       auth,
+      part: 'snippet,status',
       resource: {
         snippet: {
           title,
@@ -46,13 +47,18 @@ const getPlaylists = async (auth) => {
   }
 }
 
-const createPlaylist = async(auth, name) => {
+const createPlaylist = async (auth, title) => {
   try {
-
+    const createdPlaylist = await createPlaylistPromise(auth, title)
+    console.log(createdPlaylist)
   } catch (error) {
-
+    console.error(`Trouble creating playlist -- ${error}`)
   }
 }
+
+const createPlaylists = async (auth, titles) =>
+  Promise.all(titles.map(title => createPlaylist(auth, title)))
+
 /**
  * Lists the names and IDs of up to 10 files.
  *
@@ -86,4 +92,6 @@ const getChannel = (auth) => {
 module.exports = {
   getChannel,
   getPlaylists,
+  createPlaylist,
+  createPlaylists,
 }
