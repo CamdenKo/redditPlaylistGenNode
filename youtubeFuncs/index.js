@@ -1,8 +1,8 @@
 const google = require('googleapis')
+const service = google.youtube('v3')
 
 const getPlaylistsPromise = auth =>
   new Promise((resolve, reject) => {
-    const service = google.youtube('v3')
     service.playlists.list({
       auth,
       part: 'snippet,contentDetails',
@@ -19,7 +19,6 @@ const getPlaylistsPromise = auth =>
 
 const createPlaylistPromise = (auth, title) =>
   new Promise((resolve, reject) => {
-    const service = google.youtube('v3')
     service.playlists.insert({
       auth,
       part: 'snippet,status',
@@ -40,7 +39,6 @@ const createPlaylistPromise = (auth, title) =>
 
 const addToPlaylistPromise = (auth, playlistId, videoId) =>
   new Promise((resolve, reject) => {
-    const service = google.youtube('v3')
     service.playlistItems.insert({
       auth,
       part: 'snippet',
@@ -61,7 +59,6 @@ const addToPlaylistPromise = (auth, playlistId, videoId) =>
 
 const playistItemsPromise = (auth, playlistId) =>
   new Promise((resolve, reject) => {
-    const service = google.youtube('v3')
     service.playlistItems.list({
       auth,
       part: 'contentDetails',
@@ -69,6 +66,17 @@ const playistItemsPromise = (auth, playlistId) =>
     }, (err, response) => {
       if (err) reject(err)
       else resolve(response.items)
+    })
+  })
+
+const deletePlaylistItemPromise = (auth, playlistItemId) =>
+  new Promise((resolve, reject) => {
+    service.playlistItems.delete({
+      auth,
+      id: playlistItemId,
+    }, (err, response) => {
+      if (err) reject(err)
+      else resolve(response)
     })
   })
 
