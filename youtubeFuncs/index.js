@@ -111,12 +111,12 @@ const createPlaylists = (auth, titles) =>
   Promise.all(titles.map(title => createPlaylist(auth, title)))
 
 const addAllToPlaylist = async (auth, playlistId, videoIds) => {
-  try {
-    for (let videoId of videoIds) {
-      await addToPlaylistPromise(auth, playlistId, videoId)
+  for (let videoIndex = 0; videoIndex < videoIds.length; videoIndex += 1) {
+    try {
+      await addToPlaylistPromise(auth, playlistId, videoIds[videoIndex])
+    } catch (error) {
+      console.error(`Trouble adding to playlist -- ${error}`)
     }
-  } catch (error) {
-    console.error(`Trouble adding song to playlist -- ${error}`)
   }
 }
 
@@ -130,10 +130,8 @@ const addAllToPlaylists = async (auth, combinedData) =>
 
 const clearPlaylist = async (auth, playlistId) => {
   const playlist = await playlistItemsPromise(auth, playlistId)
-  console.log('playlist l', playlist.length)
   const playlistItemsIds = playlist
     .reduce((accum, item) => [...accum, item.id], [])
-  console.log('ids', playlistItemsIds)
   for (let playlistItemId of playlistItemsIds) {
     await deletePlaylistItemPromise(auth, playlistItemId)
   }

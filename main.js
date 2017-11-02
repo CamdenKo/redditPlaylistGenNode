@@ -38,8 +38,8 @@ const setupPlaylists = async (auth, subreddits) => {
 const startUp = async () => {
   const subreddits = [
     'listentothis',
-    // 'trailers',
-    // 'videos',
+    'trailers',
+    'videos',
   ]
   const refreshRate = minToMs(60)
 
@@ -51,17 +51,17 @@ const startUp = async () => {
     auth = auth || await accessYoutube()
     const hotContent = await getHotFromSubs(reddit, subreddits)
     const playlists = await setupPlaylists(auth, subreddits)
-    // const combinedData = Object.keys(playlists)
-    //   .reduce((accum, playlistName) =>
-    //     Object.assign(
-    //       accum,
-    //       {
-    //         [playlistName]: {
-    //           playlistId: playlists[playlistName], videoIds: hotContent[playlistName],
-    //         },
-    //       },
-    //     ), {})
-    // await addAllToPlaylists(auth, combinedData)
+    const combinedData = Object.keys(playlists)
+      .reduce((accum, playlistName) =>
+        Object.assign(
+          accum,
+          {
+            [playlistName]: {
+              playlistId: playlists[playlistName], videoIds: hotContent[playlistName],
+            },
+          },
+        ), {})
+    await addAllToPlaylists(auth, combinedData)
     console.log(`Loop finished in ${Date.now() - startTime}ms.`)
   } catch (error) {
     console.error(error)
