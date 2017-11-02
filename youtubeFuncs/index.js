@@ -53,6 +53,9 @@ const addToPlaylistPromise = (auth, playlistId, videoId) =>
           },
         },
       },
+    }, (err, response) => {
+      if (err) reject (err)
+      else resolve(response.items)
     })
   })
 
@@ -78,22 +81,34 @@ const createPlaylist = async (auth, title) => {
   }
 }
 
-const createPlaylists = async (auth, titles) =>
+const createPlaylists = (auth, titles) =>
   Promise.all(titles.map(title => createPlaylist(auth, title)))
 
 const addAllToPlaylist = async (auth, playlistId, videoIds) => {
   try {
-    await Promise.all(videoIds.map(videoId => addToPlaylistPromise(auth, playlistId, videoId)))
+    for (let index = 0; index < videoIds.length; index++) {
+      console.log(index, 'videoID', videoIds[index])
+      console.log(`videoId's length ${videoIds.length}`)
+      await addToPlaylistPromise(auth, playlistId, videoIds[index])
+    }
+    // for (let videoId of videoIds) {
+    //   console.log(`in for of with ${videoId}`)
+    //   await addToPlaylistPromise(auth, playlistId, videoId)
+    // }
+    console.log('done with add all to playlist')
   } catch (error) {
+    console.log('fuck')
     console.error(`Trouble adding song to playlist -- ${error}`)
   }
 }
 
 const addAllToPlaylists = async (auth, combinedData) =>
-  await Promise.all(Object.keys(combinedData)
-    .map((playlistName) => {
-      addAllToPlaylist(auth, combinedData[playlistName].id, combinedData[playlistName].videoId)
-    }))
+  Promise.all(
+    Object.keys(combinedData)
+      .map(playlistName =>
+        addAllToPlaylist(auth, combinedData[playlistName].playlistId, combinedData[playlistName].videoIds)
+      )
+  )
 
 /**
  * Lists the names and IDs of up to 10 files.
@@ -130,4 +145,5 @@ module.exports = {
   getPlaylists,
   createPlaylist,
   createPlaylists,
+  addAllToPlaylists,
 }

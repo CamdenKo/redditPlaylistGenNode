@@ -13,6 +13,7 @@ const {
   getPlaylists,
   createPlaylist,
   createPlaylists,
+  addAllToPlaylists,
 } = require('./youtubeFuncs')
 const {
   playlistsToMake,
@@ -23,10 +24,11 @@ const refreshRate = 100//minToMs(.15)
 
 const subreddits = [
   'listentothis',
-  'trailers',
-  'videos',
+  // 'trailers',
+  // 'videos',
 ]
 
+const testFunc = toPrint => console.log(toPrint)
 /**
  * @returns {Object} { subreddit: ['links'] }
  */
@@ -47,18 +49,19 @@ const startUp = async () => {
   const reddit = accessReddit()
   // return setInterval(async () => {
     try {
+      const startTime = Date.now()
       auth = auth ? auth : await accessYoutube()
       const hotContent = await getHotFromSubs(reddit, subreddits)
-      console.log('hot content', hotContent)
-      // const playlists = await setupPlaylists(auth, subreddits)
-
-      // const combinedData = Object.keys(playlists)
-      //   .reduce((accum, playlistName) =>
-      //     Object.assign(
-      //       accum,
-      //       { [playlistName]: { id: playlists[playlistName], links: hotContent[playlistName] } },
-      //     ), {})
-
+      const playlists = await setupPlaylists(auth, subreddits)
+      const combinedData = Object.keys(playlists)
+        .reduce((accum, playlistName) =>
+          Object.assign(
+            accum,
+            { [playlistName]: { playlistId: playlists[playlistName], videoIds: hotContent[playlistName] } },
+          ), {})
+      testFunc(combinedData.listentothis.videoIds[1])
+      await addAllToPlaylists(auth, combinedData)
+      console.log(`Loop finished in ${Date.now() - startTime}ms.`)
     } catch (error) {
       console.error(error)
       auth = await accessYoutube()
