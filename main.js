@@ -14,13 +14,14 @@ const {
   createPlaylist,
   createPlaylists,
   addAllToPlaylists,
+  playistItemsPromise
 } = require('./youtubeFuncs')
 const {
   playlistsToMake,
   filterPlaylists,
 } = require('./youtubeFuncs/youtubeUtils')
 
-const refreshRate = 100//minToMs(.15)
+const refreshRate = minToMs(.15)
 
 const subreddits = [
   'listentothis',
@@ -48,24 +49,28 @@ const startUp = async () => {
   let auth = await accessYoutube()
   const reddit = accessReddit()
   // return setInterval(async () => {
-    try {
-      const startTime = Date.now()
-      auth = auth ? auth : await accessYoutube()
-      const hotContent = await getHotFromSubs(reddit, subreddits)
-      const playlists = await setupPlaylists(auth, subreddits)
-      const combinedData = Object.keys(playlists)
-        .reduce((accum, playlistName) =>
-          Object.assign(
-            accum,
-            { [playlistName]: { playlistId: playlists[playlistName], videoIds: hotContent[playlistName] } },
-          ), {})
-      testFunc(combinedData.listentothis.videoIds[1])
-      await addAllToPlaylists(auth, combinedData)
-      console.log(`Loop finished in ${Date.now() - startTime}ms.`)
-    } catch (error) {
-      console.error(error)
-      auth = await accessYoutube()
-    }
+  try {
+    const startTime = Date.now()
+    auth = auth || await accessYoutube()
+    const hotContent = await getHotFromSubs(reddit, subreddits)
+    const playlists = await setupPlaylists(auth, subreddits)
+    console.log(await playistItemsPromise(auth, playlists.listentothis))
+    // const combinedData = Object.keys(playlists)
+    //   .reduce((accum, playlistName) =>
+    //     Object.assign(
+    //       accum,
+    //       {
+    //         [playlistName]: {
+    //           playlistId: playlists[playlistName], videoIds: hotContent[playlistName],
+    //         },
+    //       },
+    //     ), {})
+    // await addAllToPlaylists(auth, combinedData)
+    console.log(`Loop finished in ${Date.now() - startTime}ms.`)
+  } catch (error) {
+    console.error(error)
+    auth = await accessYoutube()
+  }
   // }, refreshRate)
 }
 

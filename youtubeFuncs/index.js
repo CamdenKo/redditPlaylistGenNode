@@ -54,7 +54,20 @@ const addToPlaylistPromise = (auth, playlistId, videoId) =>
         },
       },
     }, (err, response) => {
-      if (err) reject (err)
+      if (err) reject(err)
+      else resolve(response.items)
+    })
+  })
+
+const playistItemsPromise = (auth, playlistId) =>
+  new Promise((resolve, reject) => {
+    const service = google.youtube('v3')
+    service.playlistItems.list({
+      auth,
+      part: 'contentDetails',
+      playlistId,
+    }, (err, response) => {
+      if (err) reject(err)
       else resolve(response.items)
     })
   })
@@ -67,9 +80,13 @@ const addToPlaylistPromise = (auth, playlistId, videoId) =>
 const getPlaylists = async (auth) => {
   try {
     const playlists = await getPlaylistsPromise(auth)
-    return playlists.reduce((accum, playlist) => Object.assign(accum, { [playlist.snippet.title]: playlist.id }), {})
+    return playlists.reduce(
+      (accum, playlist) => Object.assign(accum, { [playlist.snippet.title]: playlist.id }),
+      {},
+    )
   } catch (error) {
     console.error(`Trouble getting playlists -- ${error}`)
+    return error
   }
 }
 
@@ -86,18 +103,10 @@ const createPlaylists = (auth, titles) =>
 
 const addAllToPlaylist = async (auth, playlistId, videoIds) => {
   try {
-    for (let index = 0; index < videoIds.length; index++) {
-      console.log(index, 'videoID', videoIds[index])
-      console.log(`videoId's length ${videoIds.length}`)
-      await addToPlaylistPromise(auth, playlistId, videoIds[index])
+    for (let videoId of videoIds) {
+      await addToPlaylistPromise(auth, playlistId, videoId)
     }
-    // for (let videoId of videoIds) {
-    //   console.log(`in for of with ${videoId}`)
-    //   await addToPlaylistPromise(auth, playlistId, videoId)
-    // }
-    console.log('done with add all to playlist')
   } catch (error) {
-    console.log('fuck')
     console.error(`Trouble adding song to playlist -- ${error}`)
   }
 }
@@ -107,7 +116,7 @@ const addAllToPlaylists = async (auth, combinedData) =>
     Object.keys(combinedData)
       .map(playlistName =>
         addAllToPlaylist(auth, combinedData[playlistName].playlistId, combinedData[playlistName].videoIds)
-      )
+      ),
   )
 
 /**
@@ -146,4 +155,5 @@ module.exports = {
   createPlaylist,
   createPlaylists,
   addAllToPlaylists,
+  playistItemsPromise,
 }
