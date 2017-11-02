@@ -26,10 +26,6 @@ const getPlaylists = async (auth) => {
   }
 }
 
-const playlistsToMake = (playlists, subreddits) => {
-  const alreadyCreatedPlaylists = new Set(Object.keys(playlists))
-  return subreddits.filter((subreddit) => !alreadyCreatedPlaylists.has(subreddit))
-}
 
 /**
  * Lists the names and IDs of up to 10 files.
@@ -61,10 +57,7 @@ const getChannel = (auth) => {
   })
 }
 
-// const updatePlaylist = (name, )
-
 module.exports = {
   getChannel,
   getPlaylists,
-  playlistsToMake,
 }
