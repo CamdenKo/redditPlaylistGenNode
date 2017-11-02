@@ -1,6 +1,6 @@
 const fs = require('fs')
 const readline = require('readline')
-const google = require('googleapis')
+
 const GoogleAuth = require('google-auth-library')
 
 const promisifedRF = path => new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ const promisifedRF = path => new Promise((resolve, reject) => {
 
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/youtube-nodejs-quickstart.json
-const SCOPES = ['https://www.googleapis.com/auth/youtube.readonly']
+const SCOPES = ['https://www.googleapis.com/auth/youtube']
 const TOKEN_DIR = `${process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE}/.credentials/`
 const TOKEN_PATH = `${TOKEN_DIR}youtube-nodejs-quickstart.json`
@@ -42,10 +42,9 @@ function storeToken(token) {
  * execute the given callback with the authorized OAuth2 client.
  *
  * @param {google.auth.OAuth2} oauth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback to call with the authorized
- *     client.
+ * @returns {google.auth.OAuth2} new Auth Object
  */
-const getNewToken = (oauth2Client, callback) => {
+const getNewToken = (oauth2Client) => {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: SCOPES,
@@ -62,39 +61,10 @@ const getNewToken = (oauth2Client, callback) => {
         console.error('Error while trying to retrieve access token', err)
         return
       }
-      const credentialOauth = Object.assign(oauth2Client, { credentials: token })
+      oauth2Client.credentials = token
       storeToken(token)
-      callback(credentialOauth)
+      return oauth2Client
     })
-  })
-}
-
-/**
- * Lists the names and IDs of up to 10 files.
- *
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function getChannel(auth) {
-  const service = google.youtube('v3')
-  service.channels.list({
-    auth,
-    part: 'snippet,contentDetails,statistics',
-    forUsername: 'GoogleDevelopers',
-  }, (err, response) => {
-    if (err) {
-      console.error(`The API returned an error: ${err}`)
-      return
-    }
-    const channels = response.items
-    if (!channels.length) {
-      console.log('No channel found.')
-    } else {
-      console.log('This channel\'s ID is %s. Its title is \'%s\', and ' +
-                  'it has %s views.',
-                  channels[0].id,
-                  channels[0].snippet.title,
-                  channels[0].statistics.viewCount)
-    }
   })
 }
 
@@ -103,9 +73,9 @@ function getChannel(auth) {
  * given callback function.
  *
  * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
+ * @returns {google.auth.OAuth2} Authorization object
  */
-const authorize = async (credentials, callback) => {
+const authorize = async (credentials) => {
   const clientSecret = credentials.installed.client_secret
   const clientId = credentials.installed.client_id
   const redirectUrl = credentials.installed.redirect_uris[0]
@@ -116,22 +86,23 @@ const authorize = async (credentials, callback) => {
   try {
     const token = await promisifedRF(TOKEN_PATH)
     oauth2Client.credentials = JSON.parse(token)
-    callback(oauth2Client)
+    return oauth2Client
   } catch (error) {
-    getNewToken(oauth2Client, callback)
+    return getNewToken(oauth2Client)
   }
 }
 
-// Load client secrets from a local file.
-const accessYoutube = () => {
-  fs.readFile('client_id.json', (err, content) => {
-    if (err) {
-      console.error(`Error loading client secret file:  ${err}`)
-      return
-    }
-    // Authorize a client with the loaded credentials, then call the YouTube API.
-    authorize(JSON.parse(content), getChannel)
-  })
+/**
+ * Load client secrets from a local file.
+ * @returns {google.auth.OAuth2} Authorization Object
+ */
+const accessYoutube = async () => {
+  try {
+    const content = await promisifedRF('client_id.json')
+    return await authorize(JSON.parse(content))
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 accessYoutube()
