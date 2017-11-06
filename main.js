@@ -16,6 +16,8 @@ const {
   filterPlaylists,
 } = require('./youtubeFuncs/youtubeUtils')
 
+if (process.env.NODE_ENV === 'development') require('./secrets')
+
 /**
  * @returns {Object} { subreddit: ['links'] }
  */
