@@ -3,6 +3,8 @@ const readline = require('readline')
 
 const GoogleAuth = require('google-auth-library')
 
+if (process.env.NODE_ENV === 'development') require('./secrets')
+
 const promisifedRF = path => new Promise((resolve, reject) => {
   fs.readFile(path, (err, value) => {
     if (err) {
@@ -101,11 +103,14 @@ const authorize = async (credentials) => {
   }
 }
 
-const tokenlessAuthorize = () =>
-  new Promise((resolve, reject) => {
-    const authFactory = new GoogleAuth()
-    const jwtClient = new authFactory.OAuth2()
-  })
+const tokenlessAuthorize = () => {
+  const authFactory = new GoogleAuth()
+  return new authFactory.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_REDIRECT_URL,
+  )
+}
 
 
 /**
@@ -114,10 +119,12 @@ const tokenlessAuthorize = () =>
  */
 const accessYoutube = async () => {
   try {
-    const content = await promisifedRF('client_id.json')
-    return await authorize(JSON.parse(content))
+    // const content = await promisifedRF('client_id.json')
+    return tokenlessAuthorize()
+    // return await authorize(JSON.parse(content))
   } catch (error) {
     console.error(error)
+    return error
   }
 }
 
