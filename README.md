@@ -19,7 +19,7 @@ Reddit bot to automatically make YouTube playlists.
       },
     }
     ```
-  * `node main.js` OR `npm start`
+* `node main.js` OR `npm start`
   
 ## Testing
 * npm run test
