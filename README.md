@@ -26,7 +26,7 @@ Reddit bot to automatically make YouTube playlists.
 
 ## TODO
 - [X] Make playlists generate to /r/SUBREDDITNAME instead of SUBREDDITNAME
-- [ ] Deploy to Heroku taskrunner
+- [X] Deploy to Heroku taskrunner
 - [ ] Make a unique youtube account
 - [ ] Expand to do more than just "Hot", perhaps top of the month?
  - [ ] Top of the month should have some type of validation to see if the playlist needs to be repopulated
