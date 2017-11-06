@@ -44,7 +44,7 @@ const startUp = async () => {
   console.log('starting...')
   const reddit = accessReddit()
   try {
-    const auth = await accessYoutube()
+    const auth = accessYoutube()
     const hotContent = await getHotFromSubs(reddit, subreddits)
     const playlists = await setupPlaylists(auth, subreddits)
     const combinedData = Object.keys(playlists)
@@ -57,6 +57,7 @@ const startUp = async () => {
             },
           },
         ), {})
+    console.log(`Now adding songs to playlists in ${Date.now() - startTime}ms.`)
     await addAllToPlaylists(auth, combinedData)
     console.log(`Loop finished in ${Date.now() - startTime}ms.`)
   } catch (error) {
