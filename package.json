@@ -4,6 +4,7 @@
   "description": "",
   "main": "playlistGen.js",
   "scripts": {
+    "start": "node main.js",
     "test": "jest",
     "test-w": "jest --watch"
   },
