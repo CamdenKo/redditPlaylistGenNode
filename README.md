@@ -20,12 +20,12 @@ Reddit bot to automatically make YouTube playlists.
     }
     ```
 * `node main.js` OR `npm start`
-  
+
 ## Testing
 * npm run test
 
 ## TODO
-- [ ] Make playlists generate to /r/SUBREDDITNAME instead of SUBREDDITNAME
+- [X] Make playlists generate to /r/SUBREDDITNAME instead of SUBREDDITNAME
 - [ ] Deploy to Heroku taskrunner
 - [ ] Make a unique youtube account
 - [ ] Expand to do more than just "Hot", perhaps top of the month?
