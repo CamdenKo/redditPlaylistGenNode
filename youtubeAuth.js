@@ -27,6 +27,7 @@ const TOKEN_PATH = `${TOKEN_DIR}youtube-nodejs-quickstart.json`
  */
 function storeToken(token) {
   try {
+    console.log(`store token @ ${TOKEN_DIR}`)
     fs.mkdirSync(TOKEN_DIR)
   } catch (err) {
     if (err.code !== 'EEXIST') {
