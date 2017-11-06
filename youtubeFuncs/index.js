@@ -89,10 +89,15 @@ const deletePlaylistItemPromise = (auth, playlistItemId) =>
 const getPlaylists = async (auth) => {
   try {
     const playlists = await getPlaylistsPromise(auth)
-    return playlists.reduce(
-      (accum, playlist) => Object.assign(accum, { [playlist.snippet.title]: playlist.id }),
-      {},
-    )
+    return playlists
+      .map(playlist => Object.assign(
+        playlist,
+        { snippet: { title: playlist.snippet.title.substring(3) } },
+      ))
+      .reduce(
+        (accum, playlist) => Object.assign(accum, { [playlist.snippet.title]: playlist.id }),
+        {},
+      )
   } catch (error) {
     console.error(`Trouble getting playlists -- ${error}`)
     return error
