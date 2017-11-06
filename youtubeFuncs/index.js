@@ -123,6 +123,7 @@ const addAllToPlaylist = async (auth, playlistId, videoIds) => {
       console.error(`Trouble adding to playlist -- ${error}`)
     }
   }
+  console.log(`Finished with playlist ${playlistId}`)
 }
 
 const addAllToPlaylists = async (auth, combinedData) =>
