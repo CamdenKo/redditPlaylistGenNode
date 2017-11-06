@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node main.js",
     "test": "jest",
+    "setup-youtube": "node youtubeAuth.js",
     "test-w": "jest --watch"
   },
   "keywords": [],
