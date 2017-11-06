@@ -5,7 +5,7 @@ const { andFunc, isYoutube } = require('./urlValidation/urlValidation')
 
 const convertURLToYoutubeId = (url) => {
   const id = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)[1].substring(0, 11)
-  return id ? id : url
+  return id || url
 }
 
 const goodURL = url =>
@@ -33,9 +33,11 @@ const getHotFromSub = async (request, subreddit) => {
 const getHotFromSubs = async (request, subreddits) => {
   try {
     const allLinks = await Promise.all(subreddits.map(subName => getHotFromSub(request, subName)))
-    return allLinks.reduce((accum, links, index) => Object.assign(accum, { [subreddits[index]]: links }), {})
+    return allLinks.reduce((accum, links, index) =>
+      Object.assign(accum, { [subreddits[index]]: links }), {})
   } catch (error) {
     console.error(error)
+    return error
   }
 }
 
