@@ -1,7 +1,5 @@
 const GoogleAuth = require('google-auth-library')
 
-if (process.env.NODE_ENV === 'development') require('./secrets')
-
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/youtube-nodejs-quickstart.json
 const SCOPES = ['https://www.googleapis.com/auth/youtube']
