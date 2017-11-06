@@ -5,8 +5,10 @@ const playlistsToMake = (playlists, subreddits) => {
 
 const filterPlaylists = (playlists, subreddits) =>
   Object.keys(playlists)
-    .filter((playlistName) => subreddits.includes(playlistName))
-    .reduce((accum, playlistName, index) => Object.assign(accum, { [playlistName]: playlists[playlistName] }), {})
+    .filter(playlistName => subreddits.includes(playlistName.substring(3)))
+    .reduce((accum, playlistName) =>
+      Object.assign(accum, { [playlistName]: playlists[playlistName] }),
+    {})
 
 module.exports = {
   playlistsToMake,

@@ -101,7 +101,7 @@ const getPlaylists = async (auth) => {
 
 const createPlaylist = async (auth, title) => {
   try {
-    await createPlaylistPromise(auth, title)
+    await createPlaylistPromise(auth, `/r/${title}`)
   } catch (error) {
     console.error(`Trouble creating playlist -- ${error}`)
   }
@@ -124,7 +124,7 @@ const addAllToPlaylists = async (auth, combinedData) =>
   Promise.all(
     Object.keys(combinedData)
       .map(playlistName =>
-        addAllToPlaylist(auth, combinedData[playlistName].playlistId, combinedData[playlistName].videoIds)
+        addAllToPlaylist(auth, combinedData[playlistName].playlistId, combinedData[playlistName].videoIds),
       ),
   )
 
