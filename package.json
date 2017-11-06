@@ -2,6 +2,9 @@
   "name": "nodePlaylistGen",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "8.1.3"
+  },
   "main": "playlistGen.js",
   "scripts": {
     "start": "node main.js",
