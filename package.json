@@ -10,14 +10,8 @@
     "start-local": "NODE_ENV='development' node main.js",
     "start": "NODE_ENV='deployed' node main.js",
     "test": "jest",
-<<<<<<< HEAD
     "deploy": "git push heroku master",
     "test-w": "jest --watch"
-=======
-    "setup-youtube": "node youtubeAuth.js",
-    "test-w": "jest --watch",
-    "deploy": "g push heroku deploy:master"
->>>>>>> da05be5e4fe7de2fd18750c3032ca5063a2dae1b
   },
   "keywords": [],
   "author": "Camden <camdenko@gmail.com> (camdenko.github.io)",
