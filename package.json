@@ -10,7 +10,7 @@
     "start-local": "NODE_ENV='development' node main.js",
     "start": "NODE_ENV='deployed' node main.js",
     "test": "jest",
-    "setup-youtube": "node youtubeAuth.js",
+    "deploy": "git push heroku master",
     "test-w": "jest --watch"
   },
   "keywords": [],
