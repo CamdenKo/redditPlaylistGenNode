@@ -39,6 +39,7 @@ const startUp = async () => {
     'listentothis',
     'trailers',
     'videos',
+    'deepintoyoutube',
   ]
   const startTime = Date.now()
   console.log('starting...')
