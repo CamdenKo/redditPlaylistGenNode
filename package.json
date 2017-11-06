@@ -10,7 +10,8 @@
     "start": "node main.js",
     "test": "jest",
     "setup-youtube": "node youtubeAuth.js",
-    "test-w": "jest --watch"
+    "test-w": "jest --watch",
+    "deploy": "g push heroku deploy:master"
   },
   "keywords": [],
   "author": "Camden <camdenko@gmail.com> (camdenko.github.io)",
