@@ -13,6 +13,14 @@ const promisifedRF = path => new Promise((resolve, reject) => {
   })
 })
 
+const promisifedWF = (path, data) =>
+  new Promise((resolve, reject) => {
+    fs.writeFile(path, data, (err) => {
+      if (err) reject(err)
+      else resolve()
+    })
+  })
+
 // If modifying these scopes, delete your previously saved credentials
 // at ~/.credentials/youtube-nodejs-quickstart.json
 const SCOPES = ['https://www.googleapis.com/auth/youtube']
@@ -27,14 +35,15 @@ const TOKEN_PATH = `${TOKEN_DIR}youtube-nodejs-quickstart.json`
  */
 function storeToken(token) {
   try {
+    console.log(`store token @ ${TOKEN_DIR}`)
     fs.mkdirSync(TOKEN_DIR)
   } catch (err) {
     if (err.code !== 'EEXIST') {
       throw err
     }
   }
-  fs.writeFile(TOKEN_PATH, JSON.stringify(token))
-  console.log(`Token stored to ${TOKEN_PATH}`)
+  promisifedWF(TOKEN_PATH, JSON.stringify(token))
+    .then(() => console.log(`Token stored to ${TOKEN_PATH}`))
 }
 
 /**
