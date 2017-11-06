@@ -101,6 +101,13 @@ const authorize = async (credentials) => {
   }
 }
 
+const tokenlessAuthorize = () =>
+  new Promise((resolve, reject) => {
+    const authFactory = new GoogleAuth()
+    const jwtClient = new authFactory.OAuth2()
+  })
+
+
 /**
  * Load client secrets from a local file.
  * @returns {google.auth.OAuth2} Authorization Object
