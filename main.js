@@ -13,6 +13,7 @@ const {
 } = require('./youtubeFuncs')
 const {
   combineData,
+  getDesiredNames,
 } = require('./util')
 const {
   playlistsToMake,
@@ -27,6 +28,7 @@ const reddit = require('./redditFuncs')
  */
 const setupPlaylists = async (auth, subreddits, contentTypes) => {
   const existingPlaylists = await getPlaylists(auth)
+  const desiredNames = getDesiredNames(subreddits, contentTypes)
   const filteredPlaylists = filterPlaylists(existingPlaylists, desiredNames)
   await clearPlaylists(auth, Object.values(filteredPlaylists))
   const toCreate = playlistsToMake(filteredPlaylists, subreddits)
