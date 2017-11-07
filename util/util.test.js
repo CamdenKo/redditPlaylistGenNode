@@ -18,7 +18,7 @@ describe('util', () => {
       expect(Array.isArray(result)).toBe(true)
     })
     test('properly appends subreddits and content types', () => {
-      expect(result).toEqual(['listentothis - hot', 'listentothis - new', 'videos - hot', 'videos - new'])
+      expect(result).toEqual(['/r/listentothis - hot', '/r/listentothis - new', '/r/videos - hot', '/r/videos - new'])
     })
   })
 })

@@ -1,5 +1,5 @@
 const subToString = (subreddit, contentType) =>
-  `${subreddit} - ${contentType}`
+  `/r/${subreddit} - ${contentType}`
 
 const stringToSub = (string) => {
   const subs = string.split(' - ')

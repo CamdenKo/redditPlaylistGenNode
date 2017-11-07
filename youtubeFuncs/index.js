@@ -106,7 +106,7 @@ const getPlaylists = async (auth) => {
 
 const createPlaylist = async (auth, title) => {
   try {
-    await createPlaylistPromise(auth, `/r/${title}`)
+    await createPlaylistPromise(auth, title)
   } catch (error) {
     console.error(`Trouble creating playlist -- ${error}`)
   }
