@@ -21,10 +21,17 @@ const combineData = (playlists, content) =>
         },
       ), {})
 
+const getDesiredNames = (subreddits, contentTypes) =>
+  subreddits.reduce(
+    (accum, subreddit) => [
+      ...accum,
+      ...contentTypes.reduce((typeAcc, type) => [...typeAcc, subToString(subreddit, type)], []),
+    ], [])
 
 module.exports = {
   minToMs,
   combineData,
   subToString,
   stringToSub,
+  getDesiredNames,
 }

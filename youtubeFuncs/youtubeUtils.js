@@ -3,9 +3,9 @@ const playlistsToMake = (playlists, subreddits) => {
   return subreddits.filter(subreddit => !alreadyCreatedPlaylists.has(subreddit))
 }
 
-const filterPlaylists = (playlists, subreddits) =>
+const filterPlaylists = (playlists, desiredNames) =>
   Object.keys(playlists)
-    .filter(playlistName => subreddits.includes(playlistName))
+    .filter(playlistName => desiredNames.includes(playlistName))
     .reduce((accum, playlistName) =>
       Object.assign(accum, { [playlistName]: playlists[playlistName] }),
     {})
