@@ -4,13 +4,16 @@ const {
 } = require('./redditBot')
 const {
   accessYoutube,
-} = require('./youtubeAuth')
+} = require('./youtubeFuncs/youtubeAuth')
 const {
   getPlaylists,
   createPlaylists,
   addAllToPlaylists,
   clearPlaylists,
 } = require('./youtubeFuncs')
+const {
+  combineData,
+} = require('./util')
 const {
   playlistsToMake,
   filterPlaylists,
@@ -37,27 +40,22 @@ const setupPlaylists = async (auth, subreddits) => {
 const startUp = async () => {
   const subreddits = [
     'listentothis',
-    'trailers',
-    'videos',
-    'deepintoyoutube',
+    // 'trailers',
+    // 'videos',
+    // 'deepintoyoutube',
+  ]
+  const contentTypes = [
+    'hot',
+    'top (all)',
   ]
   const startTime = Date.now()
   console.log('starting...')
-  const reddit = accessReddit()
   try {
+    const reddit = await accessReddit()
     const auth = accessYoutube()
     const hotContent = await getHotFromSubs(reddit, subreddits)
     const playlists = await setupPlaylists(auth, subreddits)
-    const combinedData = Object.keys(playlists)
-      .reduce((accum, playlistName) =>
-        Object.assign(
-          accum,
-          {
-            [playlistName]: {
-              playlistId: playlists[playlistName], videoIds: hotContent[playlistName],
-            },
-          },
-        ), {})
+    const combinedData = combineData(playlists, hotContent)
     console.log(`Now adding songs to playlists in ${Date.now() - startTime}ms.`)
     await addAllToPlaylists(auth, combinedData)
     console.log(`Loop finished in ${Date.now() - startTime}ms.`)

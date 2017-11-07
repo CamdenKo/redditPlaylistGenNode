@@ -22,12 +22,16 @@ const accessReddit = () =>
     userAgent: process.env.REDDIT_USER_AGENT,
   })
 
-const getHotFromSub = async (request, subreddit) => {
-  const hot = await request.getSubreddit(subreddit || 'listentothis').getHot()
-  return hot
+const filterRedditResultsToYoutubeId = results =>
+  results
     .filter(goodSubmission)
     .map(submission => convertURLToYoutubeId(submission.url))
-}
+
+const getTopFromSub = async (request, subreddit) =>
+  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit).getTop('all'))
+
+const getHotFromSub = async (request, subreddit) =>
+  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit || 'listentothis').getHot())
 
 /**
  *

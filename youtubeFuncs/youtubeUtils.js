@@ -10,17 +10,7 @@ const filterPlaylists = (playlists, subreddits) =>
       Object.assign(accum, { [playlistName]: playlists[playlistName] }),
     {})
 
-const subToString = (subreddit, contentType) =>
-  `${subreddit} - ${contentType}`
-
-const stringToSub = (string) => {
-  const subs = string.split(' - ')
-  return { subreddit: subs[0], contentType: subs[1] }
-}
-
 module.exports = {
   playlistsToMake,
   filterPlaylists,
-  subToString,
-  stringToSub,
 }
