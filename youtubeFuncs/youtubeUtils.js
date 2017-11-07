@@ -1,6 +1,6 @@
-const playlistsToMake = (playlists, subreddits) => {
+const playlistsToMake = (playlists, desiredNames) => {
   const alreadyCreatedPlaylists = new Set(Object.keys(playlists))
-  return subreddits.filter(subreddit => !alreadyCreatedPlaylists.has(subreddit))
+  return desiredNames.filter(name => !alreadyCreatedPlaylists.has(name))
 }
 
 const filterPlaylists = (playlists, desiredNames) =>
