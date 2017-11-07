@@ -5,7 +5,6 @@ const GoogleAuth = require('google-auth-library')
 const SCOPES = ['https://www.googleapis.com/auth/youtube']
 
 const tokenlessAuthorize = () => {
-  console.log('tokenless auth')
   const authFactory = new GoogleAuth()
   const client = new authFactory.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
