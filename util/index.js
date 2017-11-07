@@ -1,6 +1,3 @@
-const minToMs = min =>
-  min * 60 * 1000
-
 const subToString = (subreddit, contentType) =>
   `${subreddit} - ${contentType}`
 
@@ -29,9 +26,6 @@ const getDesiredNames = (subreddits, contentTypes) =>
     ], [])
 
 module.exports = {
-  minToMs,
   combineData,
-  subToString,
-  stringToSub,
   getDesiredNames,
 }
