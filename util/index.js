@@ -2,7 +2,7 @@ const subToString = (subreddit, contentType) =>
   `/r/${subreddit} - ${contentType}`
 
 const stringToSub = (string) => {
-  const subs = string.split(' - ')
+  const subs = string.substring(3).split(' - ')
   return { subreddit: subs[0], contentType: subs[1] }
 }
 
