@@ -1,7 +1,7 @@
 const {
-  getHotFromSubs,
-  accessReddit,
-} = require('./redditBot')
+  getHotFromSub,
+  getPostsFromSubs,
+} = require('./redditFuncs/getFromReddit')
 const {
   accessYoutube,
 } = require('./youtubeFuncs/youtubeAuth')
@@ -18,6 +18,7 @@ const {
   playlistsToMake,
   filterPlaylists,
 } = require('./youtubeFuncs/youtubeUtils')
+const reddit = require('./redditFuncs')
 
 if (process.env.NODE_ENV === 'development') require('./secrets')
 
@@ -51,9 +52,8 @@ const startUp = async () => {
   const startTime = Date.now()
   console.log('starting...')
   try {
-    const reddit = await accessReddit()
     const auth = accessYoutube()
-    const hotContent = await getHotFromSubs(reddit, subreddits)
+    const hotContent = await getPostsFromSubs(reddit, subreddits, getHotFromSub)
     const playlists = await setupPlaylists(auth, subreddits)
     const combinedData = combineData(playlists, hotContent)
     console.log(`Now adding songs to playlists in ${Date.now() - startTime}ms.`)
