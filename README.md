@@ -42,3 +42,4 @@ Currently monitored subreddits:
 #### Icebox
 - [ ] Make a utility for creating youtube api keys in node
 - [ ] Give tutorial for enabling reddit API
+- [ ] Expand testing
