@@ -25,7 +25,7 @@ const createPlaylistPromise = (auth, title) =>
       resource: {
         snippet: {
           title,
-          description: `Automatically created playlist for ${title} created by /u/CamdenK`,
+          description: `Automatically created playlist for ${title} created by /u/CamdenK. This updates every hour.`,
         },
         status: {
           privacyStatus: 'public',

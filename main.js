@@ -29,9 +29,7 @@ const reddit = require('./redditFuncs')
 const setupPlaylists = async (auth, subreddits, contentTypes) => {
   const existingPlaylists = await getPlaylists(auth)
   const desiredNames = getDesiredNames(subreddits, contentTypes)
-  console.log('ALL PLAYLISTS', existingPlaylists)
   const filteredPlaylists = filterPlaylists(existingPlaylists, desiredNames)
-  console.log('FILTERED PLAYLISTS', filteredPlaylists)
   await clearPlaylists(auth, Object.values(filteredPlaylists))
   const toCreate = playlistsToMake(filteredPlaylists, desiredNames)
   if (toCreate.length) {
@@ -57,7 +55,9 @@ const startUp = async () => {
   console.log('starting...')
   try {
     const auth = accessYoutube()
+    // TODO: make a function to get all posts from all subs
     const hotContent = await getPostsFromSubs(reddit, subreddits, getHotFromSub)
+    console.log(hotContent)
     const playlists = await setupPlaylists(auth, subreddits, contentTypes)
     console.log('playlists', playlists)
     // const combinedData = combineData(playlists, hotContent)

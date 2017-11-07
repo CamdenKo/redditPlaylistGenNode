@@ -1,11 +1,13 @@
 const filterRedditResultsToYoutubeId = require('./redditUrlUtilities')
 
-const getTopFromSub = async (request, subreddit) =>
-  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit).getTop('all'))
+const getTopFromSub = async (request, subreddit, duration) =>
+  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit).getTop(duration || 'all'))
 
 const getHotFromSub = async (request, subreddit) =>
-  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit || 'listentothis').getHot())
+  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit).getHot())
 
+const getNewFromSub = async (request, subreddit) =>
+  filterRedditResultsToYoutubeId(await request.getSubreddit(subreddit).getNew())
 /**
  *
  * @param {Snoowrap} request created Snoowrap request object
@@ -22,6 +24,22 @@ const getPostsFromSubs = async (request, subreddits, methodPromise) => {
     console.error(error)
     return error
   }
+}
+
+const mapToPostPromise = (subreddit, type) => {
+  switch (type.substring(0, 3)) {
+    case 'new':
+      return
+    case 'top':
+    case 'hot':
+    default:
+      break
+  }
+}
+
+const getAllContent = async (subreddits, contentTypes) => {
+  contentTypes.forEach((type) => {
+  })
 }
 
 module.exports = {
