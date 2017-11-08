@@ -26,6 +26,7 @@ const getDesiredNames = (subreddits, contentTypes) =>
     ], [])
 
 module.exports = {
+  subToString,
   combineData,
   getDesiredNames,
 }

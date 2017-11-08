@@ -44,7 +44,7 @@ const setupPlaylists = async (auth, subreddits, contentTypes) => {
 const startUp = async () => {
   const subreddits = [
     'listentothis',
-    // 'trailers',
+    'trailers',
     // 'videos',
     // 'deepintoyoutube',
   ]
