@@ -1,6 +1,7 @@
 const {
   getHotFromSub,
   getPostsFromSubs,
+  getAllRedditContent,
 } = require('./redditFuncs/getFromReddit')
 const {
   accessYoutube,
@@ -54,12 +55,13 @@ const startUp = async () => {
   const startTime = Date.now()
   console.log('starting...')
   try {
-    const auth = accessYoutube()
+    // const auth = accessYoutube()
     // TODO: make a function to get all posts from all subs
-    const hotContent = await getPostsFromSubs(reddit, subreddits, getHotFromSub)
-    console.log(hotContent)
-    const playlists = await setupPlaylists(auth, subreddits, contentTypes)
-    console.log('playlists', playlists)
+    // const hotContent = await getPostsFromSubs(reddit, subreddits, getHotFromSub)
+    const redditContent = await getAllRedditContent(reddit, subreddits, contentTypes)
+    console.log(redditContent)
+    // const playlists = await setupPlaylists(auth, subreddits, contentTypes)
+    // console.log('playlists', playlists)
     // const combinedData = combineData(playlists, hotContent)
     // console.log(`Now adding songs to playlists in ${Date.now() - startTime}ms.`)
     // await addAllToPlaylists(auth, combinedData)
