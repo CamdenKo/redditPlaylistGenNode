@@ -57,6 +57,7 @@ const startUp = async () => {
     const redditContent = await getAllRedditContent(reddit, subreddits, contentTypes)
     const playlists = await setupPlaylists(auth, subreddits, contentTypes)
     const combinedData = combineData(playlists, redditContent)
+    console.log(`Adding to playliosts in ${Date.now() - startTime}ms.`)
     await addAllToPlaylists(auth, combinedData)
     console.log(`Loop finished in ${Date.now() - startTime}ms.`)
   } catch (error) {
