@@ -30,15 +30,13 @@ const setupPlaylists = async (auth, subreddits, contentTypes) => {
   const desiredNames = getDesiredNames(subreddits, contentTypes)
   const filteredPlaylists = filterPlaylists(existingPlaylists, desiredNames)
   await clearPlaylists(auth, Object.values(filteredPlaylists))
-  // console.log(desiredNames)
   const toCreate = playlistsToMake(filteredPlaylists, desiredNames)
-  console.log(toCreate)
-  // if (toCreate.length) {
-  //   await createPlaylists(auth, toCreate)
-  //   const allPlaylists = await getPlaylists(auth)
-  //   return filterPlaylists(allPlaylists, desiredNames)
-  // }
-  // return filteredPlaylists
+  if (toCreate.length) {
+    await createPlaylists(auth, toCreate)
+    const allPlaylists = await getPlaylists(auth)
+    return filterPlaylists(allPlaylists, desiredNames)
+  }
+  return filteredPlaylists
 }
 
 const startUp = async () => {
@@ -58,10 +56,9 @@ const startUp = async () => {
     const auth = accessYoutube()
     const redditContent = await getAllRedditContent(reddit, subreddits, contentTypes)
     const playlists = await setupPlaylists(auth, subreddits, contentTypes)
-    // console.log(playlists)
-    // const combinedData = combineData(playlists, redditContent)
-    // await addAllToPlaylists(auth, combinedData)
-    // console.log(`Loop finished in ${Date.now() - startTime}ms.`)
+    const combinedData = combineData(playlists, redditContent)
+    await addAllToPlaylists(auth, combinedData)
+    console.log(`Loop finished in ${Date.now() - startTime}ms.`)
   } catch (error) {
     console.error(error)
   }
