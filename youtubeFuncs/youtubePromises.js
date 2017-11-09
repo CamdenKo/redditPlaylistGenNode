@@ -8,6 +8,7 @@ const getPlaylistsPromise = auth =>
       part: 'snippet,contentDetails',
       forUsername: 'youtubeRedditBot',
       mine: 'true',
+      maxResults: '50',
     }, (err, response) => {
       if (err) {
         reject(err)

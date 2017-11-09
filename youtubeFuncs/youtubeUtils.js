@@ -1,4 +1,5 @@
 const playlistsToMake = (playlists, desiredNames) => {
+  console.log('p', playlists, 'd', desiredNames)
   const alreadyCreatedPlaylists = new Set(Object.keys(playlists))
   return desiredNames.filter(name => !alreadyCreatedPlaylists.has(name))
 }
