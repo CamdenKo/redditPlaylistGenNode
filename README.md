@@ -35,7 +35,7 @@ Currently monitored subreddits:
 - [X] Make playlists generate to /r/SUBREDDITNAME instead of SUBREDDITNAME
 - [X] Deploy to Heroku taskrunner
 - [X] Make a unique youtube account
-- [ ] Expand to do more than just "Hot", perhaps top of the month?
+- [X] Expand to do more than just "Hot", perhaps top of the month?
   - [ ] Top of the month should have some type of validation to see if the playlist needs to be repopulated
 - [ ] Expand to use Youtube API to search for links that aren't youtube
 
