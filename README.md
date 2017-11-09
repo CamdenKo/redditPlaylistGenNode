@@ -9,7 +9,10 @@ Currently monitored subreddits:
 * /r/deepintoyoutube
 * /r/trailers
 
-Currently moni
+Currently monitored content types:
+* hot
+* top (week)
+
 ## Running
 * Clone repo
 * `yarn`
