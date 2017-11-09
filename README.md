@@ -9,6 +9,7 @@ Currently monitored subreddits:
 * /r/deepintoyoutube
 * /r/trailers
 
+Currently moni
 ## Running
 * Clone repo
 * `yarn`
