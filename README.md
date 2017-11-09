@@ -1,17 +1,17 @@
 # redditPlaylistGenNode
 Reddit bot to automatically make YouTube playlists of the front page of each subreddit.
 
-## [LINK](https://www.youtube.com/channel/UCi4M2JdQnGf_xv7iV0RVqNA/playlists?view_as=subscriber)
+## [Home](https://www.youtube.com/channel/UCi4M2JdQnGf_xv7iV0RVqNA/playlists?view_as=subscriber)
 
-Currently monitored subreddits:
-* /r/listentothis
-* /r/videos
-* /r/deepintoyoutube
-* /r/trailers
-
-Currently monitored content types:
-* hot
-* top (week)
+## Links:
+* [/r/listentothis - hot](https://www.youtube.com/playlist?list=PLaMFYsRjKw1eeQQu50IsKq2TXAhef17dp)
+* [/r/listentothis - top (week)](https://www.youtube.com/watch?v=K9jdIawyCJ0&list=PLaMFYsRjKw1fg70P8zY7TiNSkV0Jd34o5)
+* [/r/videos - hot](https://www.youtube.com/watch?v=MqLxbxpEMd8&list=PLaMFYsRjKw1csevVIPyxLyyQ7ypzwOntB)
+* [/r/videos - top (week)](https://www.youtube.com/playlist?list=PLaMFYsRjKw1cwsYnVvY_EBYrKV9unovF-)
+* [/r/deepintoyoutube - hot](https://www.youtube.com/playlist?list=PLaMFYsRjKw1eApNrSBdu15QdAGJW9-5jz)
+* [/r/deepintoyoutube - top (week)](https://www.youtube.com/playlist?list=PLaMFYsRjKw1fv1bTRGuhrc554C0PCw6q4)
+* [/r/trailers - hot](https://www.youtube.com/watch?v=fh899UbMhOE&list=PLaMFYsRjKw1fefny3-NU5eHtHcQO5EHBN)
+* [/r/trailers - top (week)](https://www.youtube.com/watch?v=_POpCkJToEQ&list=PLaMFYsRjKw1fbdK8rv7JEyqfIYi9_08Fc)
 
 ## Running
 * Clone repo
