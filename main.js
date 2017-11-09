@@ -45,27 +45,22 @@ const startUp = async () => {
   const subreddits = [
     'listentothis',
     'trailers',
-    // 'videos',
-    // 'deepintoyoutube',
+    'videos',
+    'deepintoyoutube',
   ]
   const contentTypes = [
     'hot',
-    'top (all)',
+    'top (week)',
   ]
   const startTime = Date.now()
   console.log('starting...')
   try {
-    // const auth = accessYoutube()
-    // TODO: make a function to get all posts from all subs
-    // const hotContent = await getPostsFromSubs(reddit, subreddits, getHotFromSub)
+    const auth = accessYoutube()
     const redditContent = await getAllRedditContent(reddit, subreddits, contentTypes)
-    console.log(redditContent)
-    // const playlists = await setupPlaylists(auth, subreddits, contentTypes)
-    // console.log('playlists', playlists)
-    // const combinedData = combineData(playlists, hotContent)
-    // console.log(`Now adding songs to playlists in ${Date.now() - startTime}ms.`)
-    // await addAllToPlaylists(auth, combinedData)
-    // console.log(`Loop finished in ${Date.now() - startTime}ms.`)
+    const playlists = await setupPlaylists(auth, subreddits, contentTypes)
+    const combinedData = combineData(playlists, redditContent)
+    await addAllToPlaylists(auth, combinedData)
+    console.log(`Loop finished in ${Date.now() - startTime}ms.`)
   } catch (error) {
     console.error(error)
   }
